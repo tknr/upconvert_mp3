@@ -15,7 +15,7 @@ if [ ${_pcnt} -gt 1 ]; then
 fi
 
 ## configuration
-TMP_DIR=/var/tmp/crond
+TMP_DIR=/tmp
 THRESHOLD_BITRATE=160
 TARGET_BITRATE=320
 TARGET_SAMPLING_RATE=48000
