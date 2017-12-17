@@ -16,7 +16,7 @@ fi
 
 ## configuration
 TMP_DIR=/tmp
-THRESHOLD_BITRATE=160
+THRESHOLD_BITRATE=128
 TARGET_BITRATE=320
 TARGET_SAMPLING_RATE=48000
 ##
@@ -48,8 +48,7 @@ do
 	do
 		BITRATE=`soxi -B "${FILENAME}" | cut -d "k" -f 1 | cut -d "." -f 1`
 		echo ''$FILENAME' : '$BITRATE' k'
-		DIFF=$(( THRESHOLD_BITRATE - BITRATE ))
-		if [ $(( DIFF )) -gt 1 ]  ; then
+		if [ $(( BITRATE )) -lt $(( THRESHOLD_BITRATE )) ]  ; then
 			echo "under threshold bitrate : ${THRESHOLD_BITRATE} . upconverting..."
 			serial=`uuidgen`
 
