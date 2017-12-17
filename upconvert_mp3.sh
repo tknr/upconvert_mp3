@@ -21,6 +21,25 @@ TARGET_BITRATE=320
 TARGET_SAMPLING_RATE=48000
 ##
 
+## http://takuya-1st.hatenablog.jp/entry/2015/12/24/234238
+while getopts ":bitrate:threshould:rate" OPT ; do
+	case $OPT in
+		bitrate)
+			TARGET_BITRATE=$OPTARG
+		;;
+		threshould)
+			THRESHOLD_BITRATE=$OPTARG
+    ;;
+		rate)
+			TARGET_SAMPLING_RATE=$OPTARG
+		;;
+		: )
+		;;
+		\? )
+		;;
+	esac
+done
+
 
 for ARG_DIR in ${argv}
 do
@@ -43,4 +62,4 @@ do
 		fi
 	done
 done
-rm ${TMP_DIR}/*.mp3
+rm -f ${TMP_DIR}/*.mp3
