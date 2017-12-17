@@ -48,7 +48,7 @@ do
 	do
 		BITRATE=`soxi -B "${FILENAME}" | cut -d "k" -f 1 | cut -d "." -f 1`
 		echo ''$FILENAME' : '$BITRATE' k'
-		if [ $(( BITRATE )) -lt $(( THRESHOLD_BITRATE )) ]  ; then
+		if [ $(( BITRATE )) -le $(( THRESHOLD_BITRATE )) ]  ; then
 			echo "under threshold bitrate : ${THRESHOLD_BITRATE} . upconverting..."
 			serial=`uuidgen`
 
