@@ -17,8 +17,9 @@ TARGET_SAMPLING_RATE=48000
 ##
 
 
-for TARGET_DIR in ${argv}
+for ARG_DIR in ${argv}
 do
+	TARGET_DIR=`readlink -f ${ARG_DIR}`
 	for FILENAME in `find "${TARGET_DIR}" -name "*.mp3" | sort`
 	do
 		BITRATE=`soxi -B "${FILENAME}" | cut -d "k" -f 1 | cut -d "." -f 1`
