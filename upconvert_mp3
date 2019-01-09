@@ -50,12 +50,13 @@ do
 		echo ''$FILENAME' : '$BITRATE' k'
 		if [ $(( BITRATE )) -le $(( THRESHOLD_BITRATE )) ]  ; then
 			echo "under threshold bitrate : ${THRESHOLD_BITRATE} . upconverting..."
-			serial=`uuidgen`
+			serial=`uuidgen` || continue
 
 			sox -S -G "${FILENAME}" -C ${TARGET_BITRATE} -r ${TARGET_SAMPLING_RATE} ${TMP_DIR}/${serial}.mp3 | continue
-			rm "${FILENAME}" && mv ${TMP_DIR}/${serial}.mp3 "${FILENAME}"
+			rm "${FILENAME}" || continue
+			mv ${TMP_DIR}/${serial}.mp3 "${FILENAME}" || continue
 
-			soxi "${FILENAME}"
+			soxi "${FILENAME}" || continue
 
 			echo "done."
 		fi
