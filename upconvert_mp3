@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 export IFS=$'\n'
 argv=("$@")
 CMDNAME=`basename $0`
@@ -46,7 +46,7 @@ do
 	TARGET_DIR=`readlink -f ${ARG_DIR}`
 	for FILENAME in `find "${TARGET_DIR}" -name "*.mp3" | sort`
 	do
-		BITRATE=`soxi -B "${FILENAME}" | cut -d "k" -f 1 | cut -d "." -f 1`
+		BITRATE=`file "${FILENAME}" | cut -d ":" -f 2 | sed 's/.*, \(.*\)kbps.*/\1/'`
 		echo ''$FILENAME' : '$BITRATE' k'
 		if [ $(( BITRATE )) -le $(( THRESHOLD_BITRATE )) ]  ; then
 			echo "under threshold bitrate : ${THRESHOLD_BITRATE} . upconverting..."
