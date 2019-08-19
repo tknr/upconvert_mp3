@@ -23,15 +23,15 @@ if [ $# -eq 0 ]; then
 fi
 
 ## http://takuya-1st.hatenablog.jp/entry/2015/12/24/234238
-while getopts "b: t: r:" OPT ; do
+while getopts "b:t:r:" OPT ; do
 	case $OPT in
-		bitrate)
+		b)
 			TARGET_BITRATE=$OPTARG
 		;;
-		threshould)
+		t)
 			THRESHOLD_BITRATE=$OPTARG
 		;;
-		rate)
+		r)
 			TARGET_SAMPLING_RATE=$OPTARG
 		;;
 		: )
