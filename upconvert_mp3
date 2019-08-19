@@ -2,10 +2,6 @@
 export IFS=$'\n'
 argv=("$@")
 CMDNAME=`basename $0`
-if [ $# -eq 0 ]; then
-	echo "Usage : ${CMDNAME} [dirname]"
-	exit 1
-fi
 
 ## https://qiita.com/hit/items/e95298f689a1ee70ae4a                                                                                                                                                               
 _pcnt=`pgrep -fo ${CMDNAME} | wc -l`               
@@ -19,7 +15,12 @@ TMP_DIR=/tmp
 THRESHOLD_BITRATE=160
 TARGET_BITRATE=320.01
 TARGET_SAMPLING_RATE=48000
+
 ##
+if [ $# -eq 0 ]; then
+        echo "Usage : ${CMDNAME} [-bitrate bitrate] [-threshould threshould] [-rate sample_rate]<dirname>"
+        exit 1
+fi
 
 ## http://takuya-1st.hatenablog.jp/entry/2015/12/24/234238
 while getopts ":bitrate:threshould:rate" OPT ; do
