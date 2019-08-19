@@ -18,12 +18,12 @@ TARGET_SAMPLING_RATE=48000
 
 ##
 if [ $# -eq 0 ]; then
-        echo "Usage : ${CMDNAME} [-bitrate bitrate] [-threshould threshould] [-rate sample_rate]<dirname>"
+        echo "Usage : ${CMDNAME} [-b bitrate] [-t threshould] [-r sample_rate]<dirname>"
         exit 1
 fi
 
 ## http://takuya-1st.hatenablog.jp/entry/2015/12/24/234238
-while getopts ":bitrate:threshould:rate" OPT ; do
+while getopts "b: t: r:" OPT ; do
 	case $OPT in
 		bitrate)
 			TARGET_BITRATE=$OPTARG
