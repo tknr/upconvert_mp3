@@ -47,7 +47,7 @@ do
 	TARGET_DIR=`readlink -f ${ARG_DIR}`
 	for FILENAME in `find "${TARGET_DIR}" -name "*.mp3" | sort`
 	do
-		BITRATE=`file "${FILENAME}" | sed 's/.*, \(.*\)kbps.*/\1/' | tr -d " " ` || continue
+		BITRATE=`ffmpeg -hide_banner -i "${FILENAME}" 2>&1 | grep Audio | cut -d "," -f 5 | tr -d " kb/s"` || continue
 		expr $BITRATE + 1 || continue
 		echo ''$FILENAME' : '$BITRATE' k'
 		if [ $(( BITRATE )) -le $(( THRESHOLD_BITRATE )) ]  ; then
