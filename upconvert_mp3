@@ -15,15 +15,20 @@ TMP_DIR=/tmp
 THRESHOLD_BITRATE=160
 TARGET_BITRATE=320.01
 TARGET_SAMPLING_RATE=48000
+TARGET_DIR=`pwd`
 
 ##
-if [ $# -eq 0 ]; then
-        echo "Usage : ${CMDNAME} [-b bitrate] [-t threshould] [-r sample_rate] <dirname>"
+usage_exit() {
+        echo "Usage : ${CMDNAME} [-b bitrate] [-t threshould_bitrate ] [-r sample_rate] [-d dir]" 1>&2
         exit 1
+}
+
+if [ $# -eq 0 ]; then
+        usage_exit
 fi
 
 ## http://takuya-1st.hatenablog.jp/entry/2015/12/24/234238
-while getopts "b:t:r:" OPT ; do
+while getopts "b:t:r:d:h" OPT ; do
 	case $OPT in
 		b)
 			TARGET_BITRATE=$OPTARG
@@ -34,17 +39,22 @@ while getopts "b:t:r:" OPT ; do
 		r)
 			TARGET_SAMPLING_RATE=$OPTARG
 		;;
-		: )
+		d)
+			TARGET_DIR=$OPTARG
+		;;
+		h)
+			usage_exit
 		;;
 		\? )
+			usage_exit
 		;;
 	esac
 done
+shift $(($OPTIND - 1))
 
 
 for ARG_DIR in ${argv}
 do
-	TARGET_DIR=`readlink -f ${ARG_DIR}`
 	for FILENAME in `find "${TARGET_DIR}" -name "*.mp3" | sort`
 	do
 		BITRATE=`ffmpeg -hide_banner -i "${FILENAME}" 2>&1 | grep Audio | cut -d "," -f 5 | tr -d " kb/s"` || continue
