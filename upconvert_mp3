@@ -53,22 +53,20 @@ done
 shift $(($OPTIND - 1))
 
 
-for ARG_DIR in ${argv}
+for FILENAME in `find "${TARGET_DIR}" -name "*.mp3" | sort`
 do
-	for FILENAME in `find "${TARGET_DIR}" -name "*.mp3" | sort`
-	do
-		BITRATE=`ffmpeg -hide_banner -i "${FILENAME}" 2>&1 | grep Audio | cut -d "," -f 5 | tr -d " kb/s"` || continue
-		expr $BITRATE + 1 || continue
-		echo ''$FILENAME' : '$BITRATE' k'
-		if [ $(( BITRATE )) -le $(( THRESHOLD_BITRATE )) ]  ; then
-			echo "under threshold bitrate ${THRESHOLD_BITRATE} : ${BITRATE} . upconverting..."
-			serial=`uuidgen` || continue
+	BITRATE=`ffmpeg -hide_banner -i "${FILENAME}" 2>&1 | grep Audio | cut -d "," -f 5 | tr -d " kb/s"` || continue
+	expr $BITRATE + 1 || continue
+	echo ''$FILENAME' : '$BITRATE' k'
+	if [ $(( BITRATE )) -lt $(( THRESHOLD_BITRATE )) ]  ; then
+		echo "under threshold bitrate ${THRESHOLD_BITRATE} : ${BITRATE} . upconverting..."
+		serial=`uuidgen` || continue
 
-			nice -n 19 sox -S -G --norm "${FILENAME}" -C ${TARGET_BITRATE} -r ${TARGET_SAMPLING_RATE} ${TMP_DIR}/${serial}.mp3 || continue
-			rm "${FILENAME}" || continue
-			mv ${TMP_DIR}/${serial}.mp3 "${FILENAME}" || continue
+		nice -n 19 sox -S -G --norm "${FILENAME}" -C ${TARGET_BITRATE} -r ${TARGET_SAMPLING_RATE} ${TMP_DIR}/${serial}.mp3 || continue
+		rm "${FILENAME}" || continue
+		mv ${TMP_DIR}/${serial}.mp3 "${FILENAME}" || continue
 
-		fi
-	done
+	fi
 done
 rm -f ${TMP_DIR}/*.mp3
+
