@@ -18,7 +18,7 @@ TARGET_SAMPLING_RATE=48000
 
 ##
 if [ $# -eq 0 ]; then
-        echo "Usage : ${CMDNAME} [-b bitrate] [-t threshould] [-r sample_rate]<dirname>"
+        echo "Usage : ${CMDNAME} [-b bitrate] [-t threshould] [-r sample_rate] <dirname>"
         exit 1
 fi
 
