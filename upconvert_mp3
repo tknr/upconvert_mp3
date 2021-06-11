@@ -62,7 +62,7 @@ do
 		echo "under threshold bitrate ${THRESHOLD_BITRATE} : ${BITRATE} . upconverting..."
 		serial=`uuidgen` || continue
 
-		nice -n 19 sox -S -G --norm "${FILENAME}" -C ${TARGET_BITRATE} -r ${TARGET_SAMPLING_RATE} ${TMP_DIR}/${serial}.mp3 || continue
+		nice -n 19 sox -V -S -G --norm "${FILENAME}" -C ${TARGET_BITRATE} -r ${TARGET_SAMPLING_RATE} ${TMP_DIR}/${serial}.mp3 dither -a || continue
 		rm "${FILENAME}" || continue
 		mv ${TMP_DIR}/${serial}.mp3 "${FILENAME}" || continue
 
